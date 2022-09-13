@@ -23,12 +23,12 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF",
-        "package": "com.a_oreo.ex_geo",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.a_oreo.ex_geo",
         "config":{
           "googleMaps":{"apiKey":"AIzaSyAgUi6VYh2Ov1Bbs7dAu1uj2VngP3586dE"}
         }
-      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
