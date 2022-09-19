@@ -24,7 +24,7 @@ export default function App() {
           var xhr = new XMLHttpRequest();
           var url = 'http://apis.data.go.kr/6410000/busstationservice/getBusStationList'; /*URL*/
           var queryParams = '?' + encodeURIComponent('serviceKey') + '='+'UkgvlYP2LDE6M%2Blz55Fb0XVdmswp%2Fh8uAUZEzUbby3OYNo80KGGV1wtqyFG5IY0uwwF0LtSDR%2FIwPGVRJCnPyw%3D%3D'; /*Service Key*/
-          queryParams += '&' + encodeURIComponent('keyword') + '=' + encodeURIComponent('아주대병원'); /**/
+          queryParams += '&' + encodeURIComponent('keyword') + '=' + encodeURIComponent('아주대'); /**/
           xhr.open('GET', url + queryParams);
           xhr.onreadystatechange = function () {
               if (this.readyState == 4) {
@@ -41,8 +41,8 @@ export default function App() {
                 tmpnode.y = xmlDoc.getElementsByTagName("y")[i].textContent;
                 
                result.push(tmpnode);
-                setResult(result);
-              
+                //setResult(result);
+             setMarkers(result);
                 i++;
                 if(xmlDoc.getElementsByTagName("stationId")[i]==undefined) break;
               }
@@ -57,10 +57,10 @@ export default function App() {
     const printMarker=async()=>{
         const resultMarker=result.map((markerItem)=>{
             return{
-                key:markerItem.id,
+                key:String(markerItem.id),
                 coordinate:{
-                    latitude:markerItem.y,
-                    longitude:markerItem.x
+                    latitude:Number(markerItem.y),
+                    longitude:Number(markerItem.x)
                 },
             };
         });
@@ -68,10 +68,10 @@ export default function App() {
     }
  	useEffect(() => {
     	ask();
+        searchStation();
   	 }, []);
-    searchStation()
-    .then(printMarker)
-    .catch("err");
+  
+   // .then(printMarker)
 return(
 <View style={styles.container}>
 <MapView
@@ -86,11 +86,17 @@ return(
         longitude:127.046866
     }}
 />
-{markers.map((item)=>{
+{markers&&markers.map((item)=>{
+    {console.log(typeof(Number(item.y)))}
+    return(
     <Marker
-    key={item.key}
-    coordinate={item.coordinate}
+    key={item.id}
+    coordinate={{
+        latitude:Number(item.y),
+        longitude:Number(item.x),
+    }}
 />
+    );
 }
 )}
 
