@@ -5,3 +5,8 @@
 ##
 ## 0913 commit
 ### 사용자의 현재 위치를 띄우는 map까지 완성, 지정한 상수 위치의 마커 찍기까지 완료
+##
+## 0919 commit
+### 카카오맵 마커 시도하기 전 커밋, 현재 아래 링크 따라서 수정중
+#### https://velog.io/@josworks27/%EC%A7%80%EB%8F%84%EA%B2%80%EC%83%89-%EA%B8%B0%EB%8A%A5-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8
+#### https://sandny.com/2021/06/26/how-to-optimize-react-native-map-views/ 
