@@ -54,24 +54,10 @@ export default function App() {
           alert(err);
         }
     };
-    const printMarker=async()=>{
-        const resultMarker=result.map((markerItem)=>{
-            return{
-                key:String(markerItem.id),
-                coordinate:{
-                    latitude:Number(markerItem.y),
-                    longitude:Number(markerItem.x)
-                },
-            };
-        });
-        setMarkers(resultMarker);
-    }
  	useEffect(() => {
     	ask();
         searchStation();
   	 }, []);
-  
-   // .then(printMarker)
 return(
 <View style={styles.container}>
 <MapView
