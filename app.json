@@ -27,7 +27,7 @@
       },
       "package": "com.a_oreo.ex_geo",
         "config":{
-          "googleMaps":{"apiKey":"AIzaSyAgUi6VYh2Ov1Bbs7dAu1uj2VngP3586dE"}
+          "googleMaps":
         }
     },
     "web": {
