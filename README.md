@@ -13,3 +13,4 @@
 
 ### npm install
 <br/> npm install expo-location
+<br/> npm install react-native-maps
