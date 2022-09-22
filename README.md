@@ -14,5 +14,5 @@
 ### npm install
 <br/> npm install expo-location
 <br/> npm install react-native-maps
-<br/> 패키지명
+<br/> 패키지명(다 처음 걸로 하면 됨)
 <br/>https://sosohanya.tistory.com/77
