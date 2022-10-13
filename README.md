@@ -11,6 +11,9 @@
 #### https://velog.io/@josworks27/%EC%A7%80%EB%8F%84%EA%B2%80%EC%83%89-%EA%B8%B0%EB%8A%A5-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8
 #### https://sandny.com/2021/06/26/how-to-optimize-react-native-map-views/ 
 
+## 1013 commit
+<br/> 마커 색 변경, 사이즈 변경 성공, 사용자의 현재 위치로부터 가까운 순부터 정렬 성공,
+<br/> 선택했을 때 마커 사이즈 변경하는 것도 나중에 해보자
 ### npm install
 <br/> npm install expo-location
 <br/> npm install react-native-maps
