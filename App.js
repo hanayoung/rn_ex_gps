@@ -3,12 +3,14 @@ import { StyleSheet, Text, View,TextInput } from 'react-native';
 import * as Location from "expo-location";
 import {DOMParser} from 'xmldom';
 import MapView, {Callout, Marker,Image} from 'react-native-maps';
+import { FontAwesome } from '@expo/vector-icons'; 
 
 export default function App() {
     const [initialRegion,setinitialRegion]=useState()
     const [result, setResult] = useState([]);
     const [markers, setMarkers] =useState([]);
     const [station, setStation] = useState('');
+    const pinColor='#000000';
  	const ask = async ()=>{
         const {granted} = await Location.requestForegroundPermissionsAsync();
     const {coords: {latitude,longitude}} = await Location.getCurrentPositionAsync({accuracy :5}); //coords를 통해 현재 위치의 좌표 받기
@@ -22,28 +24,19 @@ export default function App() {
     const handleStation = text => {
         setStation(text);
       };
-    const sortArray=async()=>{
-        console.log("sort Array called")
-        console.log("result",result)
-        let arr1=[];
-        arr1.push(result); //arr1에 기존 정렬되지 않은 값
-        console.log("arr1",arr1);
-        let arr=[]; //arr에 정렬한 값
-        let dis;
-        console.log(initialRegion.longitude);
-        for(let j=0;j<arr1.length;j++){
-            dis=Math.pow((initialRegion.longitude-Number(arr1[j].y)))+Math.pow((initialRegion.latitude-Number(arr1[j].x)));
-            arr.push(dis);
-        }
-        console.log("arr",arr);
-        arr.sort();
+    const handleResult=(arr)=>{
+        console.log("before sort",arr);
+        arr.sort(function(a,b){
+            return a.dis-b.dis;
+        });
+        console.log("after sort",arr);
         setResult(arr);
-        
+        setRegion(arr[0].x,arr[0].y);
     }
-    const setRegion=async()=>{
+    const setRegion=(x,y)=>{
         setinitialRegion({
-            latitude:Number(result[0].y),
-            longitude:Number(result[0].x),
+            latitude:Number(y),
+            longitude:Number(x),
             latitudeDelta:0.002,
             longitudeDelta:0.002
         })
@@ -63,46 +56,30 @@ export default function App() {
               let array = [];
               while(1){
                 var tmpnode = new Object();
-                
                 tmpnode.index=i;
                 tmpnode.id = xmlDoc.getElementsByTagName("stationId")[i].textContent;
                 tmpnode.name = xmlDoc.getElementsByTagName("stationName")[i].textContent;
                 tmpnode.x = xmlDoc.getElementsByTagName("x")[i].textContent;
                 tmpnode.y = xmlDoc.getElementsByTagName("y")[i].textContent;
+                console.log("위도 경도",initialRegion.longitude);
+                tmpnode.dis=Math.pow((initialRegion.longitude-tmpnode.x),2)+Math.pow((initialRegion.latitude-tmpnode.y),2);
                 array.push(tmpnode);
-                
                 i++;
                 if(xmlDoc.getElementsByTagName("stationId")[i]==undefined) break;
               }
-              setResult(array);
-               /* console.log("sorting before",result);
-                console.log("user",initialRegion.latitude);
-                console.log("user2",initialRegion.longitude);
-                //sortArray();
-                console.log("sorting after",result);
-                //setRegion(); */
-                console.log("here ",result)
+              handleResult(array);
             }
-            console.log("here 1 ",result)
           }
         xhr.send();
-        console.log("here 2 ",result)
         }
         catch(err){
           alert(err);
         }
-        console.log("herer 4",result);
     };
  	useEffect(() => {
         ask();
         searchStation();
-        {console.log("after searchStation ",result)}
   	 }, []);
-    useEffect(()=>{
-        {console.log("in useEffect ",result)}
-        sortArray();
-        setRegion();
-    },[]);
 
 return(
 <View style={styles.container}>
@@ -133,11 +110,8 @@ autoCorrect = {false}
         longitude:Number(item.x),//리턴 해줘야지 마커 뜸
     }}
     >
-    <Image 
-    source={require(`./assets/googlemaps.png`)}
-    style={{width:26,height:28}}
-    resizeMode="contain"
-    />    
+     
+     <FontAwesome name="map-marker" size={30} color="#0067A3"/>
     </Marker>
     );
 }
