@@ -2,10 +2,10 @@ import React, { useState,useEffect } from 'react';
 import { StyleSheet, Text, View,TextInput } from 'react-native';
 import * as Location from "expo-location";
 import {DOMParser} from 'xmldom';
-import MapView, {Callout, Marker,Image} from 'react-native-maps';
+import MapView, {Callout, Marker} from 'react-native-maps';
 
 export default function App() {
-    const [initialRegion,setinitialRegion]=useState()
+    const [initialRegion,setinitialRegion]=useState();
     const [result, setResult] = useState([]);
     const [markers, setMarkers] =useState([]);
     const [station, setStation] = useState('');
@@ -23,31 +23,16 @@ export default function App() {
         setStation(text);
       };
     const sortArray=async()=>{
-        console.log("sort Array called")
-        console.log("result",result)
-        let arr1=[];
-        arr1.push(result); //arr1에 기존 정렬되지 않은 값
-        console.log("arr1",arr1);
-        let arr=[]; //arr에 정렬한 값
+        let arr=[];
         let dis;
-        console.log(initialRegion.longitude);
-        for(let j=0;j<arr1.length;j++){
-            dis=Math.pow((initialRegion.longitude-Number(arr1[j].y)))+Math.pow((initialRegion.latitude-Number(arr1[j].x)));
+        for(let j=0;j<result.length;j++){
+            dis=Math.pow((initialRegion.longitude-Number(result[j].y)))+Math.pow((initialRegion.latitude-Number(result[j].x)));
             arr.push(dis);
         }
-        console.log("arr",arr);
+        console.log(arr);
         arr.sort();
         setResult(arr);
-        
     }
-    const setRegion=async()=>{
-        setinitialRegion({
-            latitude:Number(result[0].y),
-            longitude:Number(result[0].x),
-            latitudeDelta:0.002,
-            longitudeDelta:0.002
-        })
-        }
     const searchStation = async()=>{
         try{
           var xhr = new XMLHttpRequest();
@@ -75,13 +60,19 @@ export default function App() {
                 if(xmlDoc.getElementsByTagName("stationId")[i]==undefined) break;
               }
               setResult(array);
-               /* console.log("sorting before",result);
+              console.log("sorting before",result);
+              console.log("array",array);
                 console.log("user",initialRegion.latitude);
                 console.log("user2",initialRegion.longitude);
-                //sortArray();
+                sortArray();
                 console.log("sorting after",result);
-                //setRegion(); */
-                console.log("here ",result)
+              setinitialRegion({
+                latitude:Number(array[0].y),
+                longitude:Number(array[0].x),
+                latitudeDelta:0.002,
+                longitudeDelta:0.002
+            })
+            console.log("here ",result)
             }
             console.log("here 1 ",result)
           }
@@ -91,19 +82,11 @@ export default function App() {
         catch(err){
           alert(err);
         }
-        console.log("herer 4",result);
     };
  	useEffect(() => {
-        ask();
+    	ask();
         searchStation();
-        {console.log("after searchStation ",result)}
   	 }, []);
-    useEffect(()=>{
-        {console.log("in useEffect ",result)}
-        sortArray();
-        setRegion();
-    },[]);
-
 return(
 <View style={styles.container}>
 <Text style={styles.title}>CatchBus</Text>
@@ -132,13 +115,7 @@ autoCorrect = {false}
         latitude:Number(item.y),
         longitude:Number(item.x),//리턴 해줘야지 마커 뜸
     }}
-    >
-    <Image 
-    source={require(`./assets/googlemaps.png`)}
-    style={{width:26,height:28}}
-    resizeMode="contain"
-    />    
-    </Marker>
+    />
     );
 }
 )}
